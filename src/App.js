@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.scss";
 import {
   Navbar,
@@ -8,14 +8,22 @@ import {
   ErrorPage,
 } from "./components";
 
+import { useGetPokemonQuery } from "./services/pokemonApi";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
+  const { data: pokemons, isLoading } = useGetPokemonQuery();
+
   return (
     <div className="app">
-      <Navbar />
+      <Navbar pokemons={pokemons} />
       <Routes>
-        <Route exact path="/" element={<PokemonList />} />
+        <Route
+          exact
+          path="/"
+          element={<PokemonList pokemons={pokemons} isLoading={isLoading} />}
+        />
 
         <Route exact path="/pokemon/:id" element={<PokemonDetails />} />
 
